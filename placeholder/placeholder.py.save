@@ -1,0 +1,68 @@
+import sys
+import os
+
+from django.conf import settings
+
+DEBUG=os.environ.get('DEBUG','on')=='on'
+SECRET_KEY=os.environ.get('SECRET_KEY','ki==706e99f0ps9w5s*!kx%1^=5jq_k1c&#4r@#e&ng9=xlm5_')
+ALLOWED_HOSTS=os.environ.get('ALLOWED_HOSTS','localhost').split(',')
+
+settings.configure(
+	DEBUG=DEBUG,
+	SECRET_KEY=SECRET_KEY,
+	ROOT_URLCONF=__name__,
+	ALLOWED_HOSTS=ALLOWED_HOSTS,
+	MIDDLEWARE_CLASSES=(
+		'django.middleware.common.CommonMiddleware',
+		'django.middleware.csrf.CsrfViewMiddleware',
+		'django.middleware.clickjacking.XFrameOptionsMiddleware',
+		),)
+
+from io import BytesIO
+from PIL import Image
+from django.conf.urls import url
+from django.http import HttpResponse
+from django.core.wsgi import get_wsgi_application
+from django import forms
+
+class ImageForm(forms.Form):
+	"""formulario para validar o placeholder de imagem solicitado"""
+	
+	height=forms.IntegerField(min_value=1,max_value=2000)
+	width=forms.IntegerField(min_value=1,max_value=2000)
+	
+	def generate(self,image_format='PNG'):
+	"""Gera uma imagem do tipo especificado e a retorna na forma de byes puros."""
+	height=self.cleaned_data['height']
+	width=self.clenaned_data['width']
+	image=Image.new('RGB',(width,height))
+	content=BytesIO()
+	image.save(content,image_format)
+	content.seek(0)
+	return content
+
+def placeholder(request,width,height):
+	#todo o restante da view deve ser colocado aqui
+	form=ImageForm({'height':height,'width':width})
+	if form.is_valid()
+:
+		height=form.cleaned_data['height']
+		width=form.cleaned_data['width']
+		#TODO: gera a imagem do tamanho solicitado
+		return HttpResponde("OK")
+	else:
+		return HttpResponseBadRequest('Invalid Image Request')
+
+def index(request):
+	return HttpResponse("Helloo world")
+
+urlpatterns = (
+	url(r'^image/(?P<width>[0-9]+)x(?P<height>[0-9]+)/$',placeholder,name='placeholder'),
+	url(r'^$',index),
+)
+
+application=get_wsgi_application()
+
+if __name__ == "__main__":
+	from django.core.management import execute_from_command_line
+	execute_from_command_line(sys.argv)
