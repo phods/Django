@@ -5,7 +5,7 @@ from simplemooc.courses import views
 
 urlpatterns = [
 	#path('$',simplemooc.core.views.home),
-	#path('', views.home, name='home'),
+	path('', views.index1, name='index1'),
     #path('contato/', views.contact, name='contact'),
    
 ]
