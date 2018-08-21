@@ -24,21 +24,22 @@ def index1(request):
 # 	return render(request,template_name,context)
 
 def details(request,slug):
-	courses = get_object_or_404(Course,slug=slug)
+	course = get_object_or_404(Course,slug=slug)
 	context={}
 	if request.method=='POST':
 		form=ContactCourse(request.POST)
 		if form.is_valid():
 			context['is_valid']=True
+			form.send_mail(course)
 			#LIMPA O FORMULARIO
-			print(form.cleaned_data)
+			#print(form.cleaned_data)
 			form=ContactCourse() 
 
 	else:
 		form= ContactCourse()
 
 	context['form']=form
-	context['course']=courses
+	context['course']=course
 	
 	template_name='courses/details.html'
 	
