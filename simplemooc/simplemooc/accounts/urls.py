@@ -27,9 +27,11 @@ urlpatterns = [
 
    	path('cadastre-se/', views.register, name='register'),
    	path('nova-senha/', views.password_reset, name='password_reset'),
-   	path('confirmar-nova-senha/', views.password_reset_confirm, name='password_reset_confirm'),
+   	path('confirmar-nova-senha/<slug>', views.password_reset_confirm, name='password_reset_confirm'),
    	path('editar/', views.edit, name='edit'),
    	path('editar-senha/', views.edit_password, name='edit_password'),
 
+#path('<slug>', views.password_reset_confirm, name='password_reset_confirm'),
+   
 
 ]
