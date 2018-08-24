@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm,PasswordChangeForm
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import login_required
 
-from .forms import RegisterForm,EditAccountForm
+from .forms import RegisterForm,EditAccountForm,PasswordResetForm
 
 @login_required
 def dashboard(request):
@@ -28,6 +28,19 @@ def register(request):
 	context={
 		'form':form
 
+	}
+	return render(request,template_name,context)
+
+def password_reset(request):
+	template_name:'accounts/password_reset.html'
+	form=PasswordResetForm(request.POST)
+	# if request.method=='POST':
+	# 	form=PasswordResetForm()
+	# else:
+	# 	form=PasswordResetForm()
+
+	context={
+		'form': form
 	}
 	return render(request,template_name,context)
 
